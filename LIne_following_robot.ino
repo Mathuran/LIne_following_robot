@@ -42,15 +42,8 @@ void loop() {
   error = sonar.convert_cm(echotime) - distancecm;
   digitalWrite(LED3, HIGH);
   delay(50);
-  leftpower = 140 + (k * error);
-  rightpower = 140 + (-k * error);
-
-  if (leftpower > 250) {                //checks if motor power is going over 250
-    leftpower = 250;
-  }
-  if (rightpower > 250) {
-    rightpower = 250;
-  }
+  leftpower = min(250, 140 + (k * error));
+  rightpower = min(250, 140 + (-k * error));
 /*
   Serial.print("error ;");
   Serial.println(error);
@@ -65,8 +58,8 @@ void loop() {
    // Serial.print("close");
     
   } else if (error > 3) {
-    digitalWrite(LED2, HIGH);
     digitalWrite(LED1, LOW);
+    digitalWrite(LED2, HIGH);
    // Serial.print("Far");
     
   } else {
